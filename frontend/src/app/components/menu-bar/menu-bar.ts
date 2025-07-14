@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIconModule} from '@angular/material/icon';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
@@ -18,41 +18,41 @@ import {UserService} from '../../services/user-service';
     MatIconButton
   ],
   templateUrl: './menu-bar.html',
+  standalone: true,
   styleUrl: './menu-bar.scss'
 })
 export class MenuBar implements OnInit {
-    user?: User;
+  user?: User;
+  /*
+   This array holds the definition of the menu's buttons.
+  */
+  buttons: { title: string, routerLink: string[] }[] = [
+    {title: 'Welcome', routerLink: ['']}, // the tile is the text on the button, the routerLink specifies, where it will navigate
+    {title: 'Example', routerLink: ['example']},
+  ];
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private userService = inject(UserService);
 
-    constructor(private authService: AuthService, private router: Router, private userService: UserService) {
-    }
+  ngOnInit(): void {
+    this.fetchUser();
+  }
 
-    ngOnInit(): void {
-      this.fetchUser();
-    }
-
-   /*
-    This array holds the definition of the menu's buttons.
+  /**
+   * handles logout via AuthService and navigates back to login-page
    */
-    buttons: {title: string, routerLink: string[]}[] = [
-      {title: 'Welcome', routerLink: ['']}, // the tile is the text on the button, the routerLink specifies, where it will navigate
-      {title: 'Example', routerLink: ['example']},
-    ];
+  handleLogout(): void {
+    this.authService.logout().subscribe(() => {
+      void this.router.navigate(['login']);
+    })
+  }
 
-    /**
-     * handles logout via AuthService and navigates back to login-page
-     */
-    handleLogout(): void {
-      this.authService.logout().subscribe(() => {
-        void this.router.navigate(['login']);
-      })
-    }
-
-    /**
-     * fetches information about logged-in user
-     */
-    fetchUser(): void{
-      this.userService.getOwnUser().subscribe((user: User): void => {
-        this.user = user;
-      });
-    }
+  /**
+   * fetches information about logged-in user
+   */
+  fetchUser(): void {
+    this.userService.getOwnUser().subscribe((user: User): void => {
+      this.user = user;
+    });
+  }
 }

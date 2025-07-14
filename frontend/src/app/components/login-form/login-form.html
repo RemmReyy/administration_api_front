@@ -1,14 +1,11 @@
 <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input type="text" [(ngModel)]="credentials.username" matInput>
+  <mat-label>Username</mat-label>
+  <input [(ngModel)]="credentials.username" matInput type="text">
 </mat-form-field>
 <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input type="password" [(ngModel)]="credentials.password" (keydown.enter)="performLogin()" matInput>
+  <mat-label>Password</mat-label>
+  <input (keydown.enter)="performLogin()" [(ngModel)]="credentials.password" matInput type="password">
 </mat-form-field>
-@if (loginError) {
-  <span class="error">{{loginError}}</span>
-}
 <div class="controls">
-  <button matButton="filled" (click)="performLogin()">Login</button>
+  <button (click)="performLogin()" matButton="filled">Login</button>
 </div>

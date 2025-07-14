@@ -2,9 +2,27 @@
 @use '@angular/material' as mat;
 
 :root {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-body{
-    margin: 0;
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: Roboto,
+    density: -1
+  ));
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+code {
+  background: #00000010;
+  border-radius: 4px;
+  padding: 3px;
 }

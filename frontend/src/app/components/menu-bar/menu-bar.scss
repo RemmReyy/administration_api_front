@@ -1,7 +1,13 @@
 .mat-toolbar {
   gap: 0.5rem;
+  color: var(--mat-sys-primary);
+  background: var(--mat-sys-primary-container);
 }
 
-.mat-toolbar>.spacer {
+.mat-toolbar > .spacer {
   flex: 1 1 auto;
+}
+
+.menu-button-selected {
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
 }

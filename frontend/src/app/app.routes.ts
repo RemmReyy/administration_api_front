@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {LoginPage} from "./pages/login-page/login-page";
 import {ExamplePage} from "./pages/example-page/example-page";
 import {AuthGuardService} from "./services/auth-guard-service";
@@ -15,8 +15,8 @@ import {NotFoundPage} from "./pages/not-found-page/not-found-page";
   Look at: frontend/src/app/components/menu-bar/menu-bar.ts
  */
 export const routes: Routes = [
-    {path: 'login', component: LoginPage},
-    {path: 'example', component: ExamplePage, canActivate: [AuthGuardService]},
-    {path: '', component: LandingPage, canActivate: [AuthGuardService]},
-    {path: '**', component: NotFoundPage} // these entries are matched from top to bottom => not found should be the last entry
+  {path: 'login', component: LoginPage},
+  {path: 'example', component: ExamplePage, canActivate: [AuthGuardService]},
+  {path: '', component: LandingPage, canActivate: [AuthGuardService]},
+  {path: '**', component: NotFoundPage} // these entries are matched from top to bottom => not found should be the last entry
 ];
