@@ -5,14 +5,15 @@ stages:
   - deploy
 
 variables:
-  ANGULAR_CLI_VERSION: 16.0.2
-  NODE_VERSION: 18
+  ANGULAR_CLI_VERSION: 20.0.5
+  NODE_VERSION: 24
 
 .backend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
       changes:
         - backend/**/*
+        - backend/*
         - .gitlab-ci.yml
 
 .frontend_rules:
@@ -20,6 +21,7 @@ variables:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
       changes:
         - frontend/**/*
+        - frontend/*
         - .gitlab-ci.yml
 
 .node:
@@ -131,8 +133,8 @@ lint:frontend:
       - frontend/node_modules
     policy: pull
 
-.test:frontend:
-  image: container.docker.inf.h-brs.de/diarchitect/docker-node-chrome-firefox:master
+.test:frontend: #this job is disabled by default (you may enable it, by removing the leading dot ("."), if frontend-testing is required)
+  image: container.docker.inf.h-brs.de/diarchitect/docker-node-chrome-firefox:node24
   stage: test
   needs:
     - install-dependencies:frontend
