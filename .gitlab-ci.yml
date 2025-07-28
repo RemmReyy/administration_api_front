@@ -6,7 +6,7 @@ stages:
 
 variables:
   ANGULAR_CLI_VERSION: 20.0.5
-  NODE_VERSION: 24
+  NODE_VERSION: 24.4.0
 
 .backend_rules:
   rules:
@@ -28,6 +28,13 @@ variables:
   image: node:${NODE_VERSION}-alpine
   before_script:
     - npm config set registry https://sepp-nexus.inf.h-brs.de/repository/npm/
+
+.with-proxy:
+  variables:
+    HTTP_PROXY: "http://www-cache:8080"
+    HTTPS_PROXY: "http://www-cache:8080"
+    http_proxy: "http://www-cache:8080"
+    https_proxy: "http://www-cache:8080"
 
 install-dependencies:backend:
   extends: .node
@@ -74,11 +81,7 @@ unit-test:backend:
 deploy:backend:
   stage: deploy
   image: keymetrics/pm2:latest-alpine
-  variables:
-    HTTP_PROXY: "http://www-cache:8080"
-    HTTPS_PROXY: "http://www-cache:8080"
-    http_proxy: "http://www-cache:8080"
-    https_proxy: "http://www-cache:8080"
+  extends: .with-proxy
   rules:
     - !reference [ .backend_rules, rules ]
   needs:
@@ -94,6 +97,8 @@ deploy:backend:
     - echo "Test ssh connection"
     - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" pm2 status
     # Deploy
+    #- sed -i "s/\process.env.NODE_VERSION/'${NODE_VERSION}'/g" backend/ecosystem.config.js
+    - cat backend/ecosystem.config.js
     - echo "Setup tagged server directories"
     - pm2 deploy backend/ecosystem.config.js production setup 2>&1 || true
     - echo "make deploy"
@@ -163,7 +168,9 @@ lint:frontend:
     policy: pull
 
 build:frontend:
-  extends: .node
+  extends: 
+    - .node
+    - .with-proxy
   stage: build
   rules:
     - !reference [ .frontend_rules, rules ]
@@ -176,7 +183,7 @@ build:frontend:
     - npm run build -- --base-href=/$TARGET_SERVER_USER/
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/frontend/dist
+      - frontend/dist
   cache:
     key:
       files:
@@ -188,11 +195,7 @@ build:frontend:
 deploy:frontend:
   image: alpine
   stage: deploy
-  variables:
-    HTTP_PROXY: "http://www-cache:8080"
-    HTTPS_PROXY: "http://www-cache:8080"
-    http_proxy: "http://www-cache:8080"
-    https_proxy: "http://www-cache:8080"
+  extends: .with-proxy
   rules:
     - !reference [ .frontend_rules, rules ]
   needs:
@@ -211,6 +214,5 @@ deploy:frontend:
     - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
     - echo "Test ssh connection"
     - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" hostname
-    - ssh  "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" rm -rf app
-    - scp -r dist/app "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST:."
-
+    - ssh  "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" rm -rf app &&  mkdir app
+    - scp -r dist/app/browser/* "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST:./app"

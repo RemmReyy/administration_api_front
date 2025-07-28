@@ -6,6 +6,9 @@ const TARGET_SERVER_USER = process.env.TARGET_SERVER_USER ? process.env.TARGET_S
 const TARGET_SERVER_APP_PATH = `/home/${TARGET_SERVER_USER}/app`;
 // Your repository
 const REPO = process.env.CI_REPOSITORY_URL;
+//Your branch
+const BRANCH = process.env.CI_COMMIT_BRANCH;
+
 
 module.exports = {
     /**
@@ -22,7 +25,8 @@ module.exports = {
             env_production: {
                 NODE_ENV: 'production',
                 PORT: 8080
-            }
+            },
+            interpreter: '/usr/local/n/versions/node/24.4.0/bin/node'
         }
     ],
 
@@ -34,7 +38,7 @@ module.exports = {
         production: {
             user: TARGET_SERVER_USER,
             host: TARGET_SERVER_HOST,
-            ref: 'origin/main',
+            ref: 'origin/' + BRANCH,
             repo: REPO,
             ssh_options: 'StrictHostKeyChecking=no',
             path: TARGET_SERVER_APP_PATH,
