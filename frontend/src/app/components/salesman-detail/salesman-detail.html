@@ -1,1 +1,60 @@
-<p>salesman-detail works!</p>
+<div class="detail-container">
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="!loading && salesman">
+    <div class="header">
+      <div>
+        <h1>{{ salesman.firstname }} {{ salesman.lastname }}</h1>
+        <p class="sid">ID: {{ salesman.sid }}</p>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" (click)="goBack()">Back</button>
+        <button class="btn-primary" (click)="editSalesman()">Edit</button>
+        <button class="btn-danger" (click)="deleteSalesman()">Delete</button>
+      </div>
+    </div>
+
+    <div class="records-section">
+      <div class="section-header">
+        <h2>Performance records</h2>
+        <button class="btn-primary" (click)="addRecord()">Add a record</button>
+      </div>
+
+      <div *ngIf="records.length === 0" class="no-records">
+        There are no records
+      </div>
+
+      <div *ngIf="records.length > 0" class="table-container">
+        <table>
+          <thead>
+          <tr>
+            <th>Year</th>
+            <th>Target value</th>
+            <th>Actual value</th>
+            <th>Bonus</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let record of records">
+            <td>{{ record.year }}</td>
+            <td>{{ record.targetValue || '-' }}</td>
+            <td>{{ record.actualValue || '-' }}</td>
+            <td>{{ record.bonus || '-' }}</td>
+            <td>
+              <button class="btn-small" (click)="editRecord(record.year)">
+                Edit
+              </button>
+              <button class="btn-small btn-delete" (click)="deleteRecord(record.year)">
+                Delete
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
