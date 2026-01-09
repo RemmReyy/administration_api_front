@@ -1,22 +1,22 @@
-import {Routes} from '@angular/router';
-import {LoginPage} from "./pages/login-page/login-page";
-import {ExamplePage} from "./pages/example-page/example-page";
-import {AuthGuardService} from "./services/auth-guard-service";
-import {LandingPage} from "./pages/landing-page/landing-page";
-import {NotFoundPage} from "./pages/not-found-page/not-found-page";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { SalesmanListComponent } from './components/salesman-list/salesman-list';
+import { SalesmanDetailComponent } from './components/salesman-detail/salesman-detail';
+import { SalesmanFormComponent } from './components/salesman-form/salesman-form';
+import { RecordFormComponent } from './components/record-form/record-form';
 
-/*
-  This array holds the relation of paths and components, which angular router should resolve.
-
-  If you want to add a new page with a separate path/subdirectory you should register it here.
-  It is also possible to read parameters from the path they have to be specified with ':' in the path.
-
-  If a new page should also show up in the menu bar, you need to add it there too.
-  Look at: frontend/src/app/components/menu-bar/menu-bar.ts
- */
-export const routes: Routes = [
-  {path: 'login', component: LoginPage},
-  {path: 'example', component: ExamplePage, canActivate: [AuthGuardService]},
-  {path: '', component: LandingPage, canActivate: [AuthGuardService]},
-  {path: '**', component: NotFoundPage} // these entries are matched from top to bottom => not found should be the last entry
+const routes: Routes = [
+  { path: '', redirectTo: '/salesman', pathMatch: 'full' },
+  { path: 'salesman', component: SalesmanListComponent },
+  { path: 'salesman/new', component: SalesmanFormComponent },
+  { path: 'salesman/:sid', component: SalesmanDetailComponent },
+  { path: 'salesman/:sid/edit', component: SalesmanFormComponent },
+  { path: 'salesman/:sid/record/new', component: RecordFormComponent },
+  { path: 'salesman/:sid/record/:year', component: RecordFormComponent }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
