@@ -1,1 +1,51 @@
-<p>salesman-list works!</p>
+<div class="salesman-list-container">
+  <div class="header">
+    <h1>Список продавців</h1>
+    <button class="btn-primary" (click)="createNew()">
+      Додати продавця
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Завантаження...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let salesman of salesmen">
+        <td>{{ salesman.sid }}</td>
+        <td>{{ salesman.firstname }}</td>
+        <td>{{ salesman.lastname }}</td>
+        <td>
+          <button class="btn-small" (click)="viewDetails(salesman.sid!)">
+            Details
+          </button>
+          <button class="btn-small btn-edit" (click)="editSalesman(salesman.sid!)">
+            Edit
+          </button>
+          <button class="btn-small btn-delete" (click)="deleteSalesman(salesman.sid!)">
+            Delete
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="salesmen.length === 0" class="no-data">
+      There are no sellers
+    </div>
+  </div>
+</div>
