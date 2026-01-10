@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService, SocialPerformanceRecord } from '../../services/api.service';
 import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-record-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './record-form.html',
-  imports: [
-    FormsModule
-  ],
   styleUrls: ['./record-form.scss']
 })
 export class RecordFormComponent implements OnInit {

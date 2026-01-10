@@ -1,22 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {MenuBar} from "./components/menu-bar/menu-bar";
-import {AuthService} from "./services/auth-service";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';  // +++
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MenuBar],
-  templateUrl: './app.html',
   standalone: true,
-  styleUrl: './app.scss'
+  imports: [RouterOutlet],  // +++
+  templateUrl: './app.html',
+  styleUrls: ['./app.scss']
 })
-export class App implements OnInit {
-  isLoggedIn = false;
-  protected authService = inject(AuthService);
-
-  ngOnInit(): void {
-    this.authService.onLoginStateChange().subscribe(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-    })
-  }
+export class App {
+  title = 'Administration System';
 }

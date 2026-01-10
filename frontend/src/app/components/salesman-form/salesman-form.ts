@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService, Salesman } from '../../services/api.service';
 import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-salesman-form',
   templateUrl: './salesman-form.html',
   imports: [
-    FormsModule
+    FormsModule,CommonModule
   ],
   styleUrls: ['./salesman-form.scss']
 })

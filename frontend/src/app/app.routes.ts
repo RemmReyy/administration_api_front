@@ -1,22 +1,39 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { SalesmanListComponent } from './components/salesman-list/salesman-list';
-import { SalesmanDetailComponent } from './components/salesman-detail/salesman-detail';
-import { SalesmanFormComponent } from './components/salesman-form/salesman-form';
-import { RecordFormComponent } from './components/record-form/record-form';
+import { Routes } from '@angular/router';
 
-const routes: Routes = [
-  { path: '', redirectTo: '/salesman', pathMatch: 'full' },
-  { path: 'salesman', component: SalesmanListComponent },
-  { path: 'salesman/new', component: SalesmanFormComponent },
-  { path: 'salesman/:sid', component: SalesmanDetailComponent },
-  { path: 'salesman/:sid/edit', component: SalesmanFormComponent },
-  { path: 'salesman/:sid/record/new', component: RecordFormComponent },
-  { path: 'salesman/:sid/record/:year', component: RecordFormComponent }
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/salesman',
+    pathMatch: 'full'
+  },
+  {
+    path: 'salesman',
+    loadComponent: () => import('./components/salesman-list/salesman-list')
+      .then(m => m.SalesmanListComponent)
+  },
+  {
+    path: 'salesman/new',
+    loadComponent: () => import('./components/salesman-form/salesman-form')
+      .then(m => m.SalesmanFormComponent)
+  },
+  {
+    path: 'salesman/:sid',
+    loadComponent: () => import('./components/salesman-detail/salesman-detail')
+      .then(m => m.SalesmanDetailComponent)
+  },
+  {
+    path: 'salesman/:sid/edit',
+    loadComponent: () => import('./components/salesman-form/salesman-form')
+      .then(m => m.SalesmanFormComponent)
+  },
+  {
+    path: 'salesman/:sid/record/new',
+    loadComponent: () => import('./components/record-form/record-form')
+      .then(m => m.RecordFormComponent)
+  },
+  {
+    path: 'salesman/:sid/record/:year',
+    loadComponent: () => import('./components/record-form/record-form')
+      .then(m => m.RecordFormComponent)
+  }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

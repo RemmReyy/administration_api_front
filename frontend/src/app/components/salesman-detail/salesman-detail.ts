@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService, Salesman, SocialPerformanceRecord } from '../../services/api.service';
 
 @Component({
   selector: 'app-salesman-detail',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './salesman-detail.html',
   styleUrls: ['./salesman-detail.scss']
 })

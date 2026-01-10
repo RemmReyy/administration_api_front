@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { ApiService, Salesman } from '../../services/api.service';
 
 @Component({
   selector: 'app-salesman-list',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './salesman-list.html',
   styleUrls: ['./salesman-list.scss']
 })
